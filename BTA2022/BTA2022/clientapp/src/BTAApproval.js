@@ -59,12 +59,12 @@ export default function BTAApproval() {
 
 
     return (
-        <div className="table-responsive mt-5">
+        <div className="table-responsive m-5">
             {blnViewRequest === false &&
 
                 (<div>
-                    <table className="table table-bordered border-dark">
-                        <thead>
+                <table className="table table-striped">
+                    <thead className="table-dark">
                             <tr>
                                 <th scope="col">Name of Traveler</th>
                                 <th scope="col">Department</th>

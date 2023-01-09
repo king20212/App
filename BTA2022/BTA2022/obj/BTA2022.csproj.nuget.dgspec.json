@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kingc\\source\\repos\\BTA2022\\BTA2022\\BTA2022.csproj": {}
+    "C:\\Users\\kingc\\Documents\\GitHub\\App\\BTA2022\\BTA2022\\BTA2022.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kingc\\source\\repos\\BTA2022\\BTA2022\\BTA2022.csproj": {
+    "C:\\Users\\kingc\\Documents\\GitHub\\App\\BTA2022\\BTA2022\\BTA2022.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kingc\\source\\repos\\BTA2022\\BTA2022\\BTA2022.csproj",
+        "projectUniqueName": "C:\\Users\\kingc\\Documents\\GitHub\\App\\BTA2022\\BTA2022\\BTA2022.csproj",
         "projectName": "BTA2022",
-        "projectPath": "C:\\Users\\kingc\\source\\repos\\BTA2022\\BTA2022\\BTA2022.csproj",
+        "projectPath": "C:\\Users\\kingc\\Documents\\GitHub\\App\\BTA2022\\BTA2022\\BTA2022.csproj",
         "packagesPath": "C:\\Users\\kingc\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kingc\\source\\repos\\BTA2022\\BTA2022\\obj\\",
+        "outputPath": "C:\\Users\\kingc\\Documents\\GitHub\\App\\BTA2022\\BTA2022\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

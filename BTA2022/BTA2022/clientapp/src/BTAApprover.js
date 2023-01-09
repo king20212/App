@@ -97,9 +97,9 @@ export default function BTAApprover() {
     }
 
     return (
-        <div className="table-responsive mt-5">
-            <table className="table table-bordered border-dark">
-                <thead>
+        <div className="table-responsive m-5">
+            <table className="table table-striped">
+                <thead className="table-dark">
                     <tr>
                         <th scope="col">User</th>
                         <th scope="col">Sequence</th>

@@ -10,6 +10,10 @@ export default function ViewRequest(props) {
         fetch('https://localhost:7195/api/BTATickets/' + props.btareq.REQUEST_ID)
             .then(response => response.json())
             .then(data => setBTATickets(data));
+
+        fetch('https://localhost:7195/api/BTAHotels/' + props.btareq.REQUEST_ID)
+            .then(response => response.json())
+            .then(data => setBTAHotels(data));
     })
 
     return (

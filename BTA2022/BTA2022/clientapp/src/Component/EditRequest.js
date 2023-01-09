@@ -1,7 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 import { Accordion, Button, Container, Row, Col, Form } from 'react-bootstrap';
 
-export default function AddRequest(props) {
+export default function EditRequest(props) {
 
     const [formData, setFormData] = useState({
         REQUEST_ID: '',
@@ -56,6 +56,8 @@ export default function AddRequest(props) {
         HOME_VISIT: '',
         HR_APPROVAL_DATE: ''
     });
+    const [btaHotels, setBTAHotels] = useState([]);
+    const [btaTickets, setBTATickets] = useState([]);
     const [departments, setDepartments] = useState([]);
     const [travelTypes, setTravelTypes] = useState([]);
     const [travelClasses, setTravelClasses] = useState([]);
@@ -63,8 +65,6 @@ export default function AddRequest(props) {
 
     function handleSubmit(event) {
         event.preventDefault();
-
-        console.log(formData);
 
         const postToUpdate = {
             REQUEST_ID: formData.REQUEST_ID,
@@ -161,6 +161,14 @@ export default function AddRequest(props) {
         fetch('https://localhost:7195/api/BTARequests/GetCurrencies')
             .then(response => response.json())
             .then(data => setCurrencies(data));
+
+        fetch('https://localhost:7195/api/BTATickets/' + props.btareq.REQUEST_ID)
+            .then(response => response.json())
+            .then(data => setBTATickets(data));
+
+        fetch('https://localhost:7195/api/BTAHotels/' + props.btareq.REQUEST_ID)
+            .then(response => response.json())
+            .then(data => setBTAHotels(data));
     });
 
 

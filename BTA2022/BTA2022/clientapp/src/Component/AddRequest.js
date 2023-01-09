@@ -225,7 +225,7 @@ export default function AddRequest(props) {
 
         let ticketCopy = formTicketData;
         ticketCopy.push(newTicket);
-        setFormTicketData(ticketCopy);
+        setFormTicketData([...ticketCopy]);
     }
 
     function handleTicketChange(event, index) {
@@ -234,13 +234,13 @@ export default function AddRequest(props) {
             ...ticketCopy[index],
             [event.target.name]: event.target.value,
         }
-        setFormTicketData(ticketCopy);
+        setFormTicketData([...ticketCopy]);
     }
 
     function handleTicketDelete(index) {
         let ticketCopy = formTicketData;
         ticketCopy.splice(index, 1);
-        setFormTicketData(ticketCopy);
+        setFormTicketData([...ticketCopy]);
     }
 
     function addHotel() {
@@ -264,7 +264,7 @@ export default function AddRequest(props) {
 
         let hotelCopy = formHotelData;
         hotelCopy.push(newHotel);
-        setFormHotelData(hotelCopy);
+        setFormHotelData([...hotelCopy]);
     }
 
     function handleHotelChange(event, index) {
@@ -273,13 +273,13 @@ export default function AddRequest(props) {
             ...hotelCopy[index],
             [event.target.name]: event.target.value,
         }
-        setFormHotelData(hotelCopy);
+        setFormHotelData([...hotelCopy]);
     }
 
     function handleHotelDelete(index) {
         let hotelCopy = formHotelData;
         hotelCopy.splice(index, 1);
-        setFormHotelData(hotelCopy);
+        setFormHotelData([...hotelCopy]);
     }
 
     useEffect(() => {
@@ -619,12 +619,14 @@ export default function AddRequest(props) {
                     </Accordion.Item>
                 </Accordion>
             </Form>
-            <Button variant="secondary" onClick={props.onHide}>
-                Close
-            </Button>
-            <Button form="addRequest" variant="primary" type="Submit" >
-                Submit
-            </Button>
+            <div >
+                <Button variant="secondary" onClick={props.onHide} className="my-3 me-3">
+                    Close
+                </Button>
+                <Button form="addRequest" variant="primary" type="Submit" className="my-3 me-3">
+                    Submit
+                </Button>
+            </div>
         </Container>
     );
 }

@@ -8,7 +8,7 @@ namespace BTA2022.Models
         public int REQUEST_ID { get; set; }
         public string? REQUESTED_BY { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime? REQUEST_DATE { get; set; }
 
         public string? REQUEST_STATUS { get; set; }
