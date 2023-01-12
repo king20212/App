@@ -45,9 +45,9 @@ export default function BTARequest() {
                 <tbody>
                     {btaRequests.map((btaRequest) => (
                         <tr key={btaRequest.REQUEST_ID}>
-                            <td>{btaRequest.REQUESTED_BY}</td>
+                            <td>{btaRequest.USER_NAME}</td>
                             <td>{btaRequest.REQUEST_DATE}</td>
-                            <td>{btaRequest.REQUEST_STATUS}</td>
+                            <td>{btaRequest.STATUS_DESC}</td>
                             <td>
                                 <div className="btn-group" role="group">
                                     <button type="button" className="btn btn-secondary" onClick={() => {

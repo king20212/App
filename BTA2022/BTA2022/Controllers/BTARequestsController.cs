@@ -20,7 +20,6 @@ namespace BTA2022.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"select * from bta_request";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -28,11 +27,54 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+                    myCommand.CommandText = "PKG_BTA_ENQUIRY.SP_GET_SUBMISSION";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[8];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "KINCHA";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Type", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = 0;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Request_From", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Request_To", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Status", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_Submission", OracleDbType.RefCursor);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
-
 
                     myReader.Close();
                     myCon.Close();
@@ -531,7 +573,6 @@ namespace BTA2022.Controllers
         [HttpGet]
         public JsonResult GetPendingApprovalRequests()
         {
-            string query = @"select * from bta_request where REQUEST_STATUS = 'N'";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -539,7 +580,67 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+                    myCommand.CommandText = "PKG_BTA_ENQUIRY.SP_GET_APPROVAL";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[12];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "APP";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Type", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = 0;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Access", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = 0;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Request_From", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Request_To", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Traveler", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Department", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Status", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = DBNull.Value;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_HRApproval", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = 0;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_Approval", OracleDbType.RefCursor);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -559,7 +660,6 @@ namespace BTA2022.Controllers
         [HttpGet]
         public JsonResult GetDepartments()
         {
-            string query = @"select record_code, record_desc from bta_attribute_definition where record_type = 'COSTCENTER'";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -567,15 +667,42 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+
+                    myCommand.CommandText = "PKG_BTA_LOOKUP.SP_GET_DEPTLIST";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[4];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "KINCHA";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_DeptList", OracleDbType.RefCursor);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
 
-
                     myReader.Close();
                     myCon.Close();
-
                 }
             }
 
@@ -587,7 +714,6 @@ namespace BTA2022.Controllers
         [HttpGet]
         public JsonResult GetCurrencies()
         {
-            string query = @"select record_code, record_desc from bta_attribute_definition where record_type = 'CURRENCY'";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -595,7 +721,31 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+                    myCommand.CommandText = "PKG_BTA_LOOKUP.SP_GET_CURRENCYF";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[3];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_Currency", OracleDbType.RefCursor);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -615,7 +765,6 @@ namespace BTA2022.Controllers
         [HttpGet]
         public JsonResult GetTravelClasses()
         {
-            string query = @"select record_code, record_desc from bta_attribute_definition where record_type = 'TRAVEL_CLS'";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -623,15 +772,42 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+
+                    myCommand.CommandText = "PKG_BTA_LOOKUP.SP_GET_CLASSLIST";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[4];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "KINCHA";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_ClassList", OracleDbType.RefCursor);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
 
-
                     myReader.Close();
                     myCon.Close();
-
                 }
             }
 
@@ -643,7 +819,6 @@ namespace BTA2022.Controllers
         [HttpGet]
         public JsonResult GetTravelTypes()
         {
-            string query = @"select record_code, record_desc from bta_attribute_definition where record_type = 'TRAVEL_TYP'";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -651,15 +826,42 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+
+                    myCommand.CommandText = "PKG_BTA_LOOKUP.SP_GET_TRAVELLIST";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[4];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "KINCHA";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_TravelList", OracleDbType.RefCursor);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
 
-
                     myReader.Close();
                     myCon.Close();
-
                 }
             }
 
@@ -671,9 +873,6 @@ namespace BTA2022.Controllers
         [HttpPatch]
         public JsonResult ApproveRequest(int id)
         {
-            string query = @"update bta_request set 
-                            REQUEST_STATUS = 'A'
-                            where request_id = '" + id + @"' ";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -681,7 +880,36 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+                    myCommand.CommandText = "PKG_BTA_REQUEST.SP_APP_REQUEST";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[4];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Request_Id", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = id;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "APP";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -700,9 +928,9 @@ namespace BTA2022.Controllers
         [HttpPatch]
         public JsonResult RejectRequest(int id)
         {
-            string query = @"update bta_request set 
-                            REQUEST_STATUS = 'R'
-                            where request_id = '" + id + @"' ";
+            //string query = @"update bta_request set 
+            //                REQUEST_STATUS = 'R'
+            //                where request_id = '" + id + @"' ";
             DataTable table = new DataTable();
             string con = _configuration.GetConnectionString("BTACon");
             using (OracleConnection myCon = new OracleConnection(con))
@@ -710,15 +938,46 @@ namespace BTA2022.Controllers
                 using (OracleCommand myCommand = myCon.CreateCommand())
                 {
                     myCon.Open();
-                    myCommand.CommandText = query;
+                    myCommand.CommandText = "PKG_BTA_REQUEST.SP_REJ_REQUEST";
+                    myCommand.CommandType = CommandType.StoredProcedure;
+
+                    OracleParameter[] paramsArray = new OracleParameter[5];
+                    OracleParameter paramReturnCode = null;
+                    OracleParameter paramReturnMessage = null;
+
+                    int parameterIndex = -1;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Request_Id", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = id;
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_Remark", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "KINCHA";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("pi_User", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Input;
+                    paramsArray[parameterIndex].Value = "KINCHA";
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetCD", OracleDbType.Int32);
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnCode = paramsArray[parameterIndex];
+
+                    paramsArray[++parameterIndex] = new OracleParameter("po_RetMsg", OracleDbType.Varchar2);
+                    paramsArray[parameterIndex].Size = 255;
+                    paramsArray[parameterIndex].Direction = ParameterDirection.Output;
+                    paramReturnMessage = paramsArray[parameterIndex];
+
+                    foreach (OracleParameter parameter in paramsArray)
+                    {
+                        myCommand.Parameters.Add(parameter);
+                    }
 
                     OracleDataReader myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
 
-
                     myReader.Close();
                     myCon.Close();
-
                 }
             }
 

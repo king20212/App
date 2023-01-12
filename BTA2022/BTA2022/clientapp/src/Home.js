@@ -1,7 +1,4 @@
-﻿import React, { Component, useState } from 'react';
-import Select from "./Component/Select";
-
-export default function Home() {
+﻿export default function Home() {
     
 
     return (

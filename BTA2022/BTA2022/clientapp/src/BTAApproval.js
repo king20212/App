@@ -77,7 +77,7 @@ export default function BTAApproval() {
                         <tbody>
                             {btaRequests.map((btaRequest) => (
                                 <tr key={btaRequest.REQUEST_ID}>
-                                    <td>{btaRequest.REQUESTED_BY}</td>
+                                    <td>{btaRequest.USER_NAME}</td>
                                     <td>{btaRequest.DEPARTMENT}</td>
                                     <td>{btaRequest.EXTN_NO}</td>
                                     <td>{btaRequest.REQUEST_DATE}</td>
